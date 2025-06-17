@@ -1,7 +1,16 @@
 import makeShip from "../entities/makeShip";
 import k from "../kaplayCtx";
 
+// movement vals
+const ACCEL = 1500;
+const MAX_VEL = 600;
+const FRICTION = 800;
+
 const getDirVector = () => {
+    /**
+     * Function to get the unnormalized direction vector of the ship, based on the movement key presses.
+     * @return {vec2} direction vector
+     */
     const vec = k.vec2(0, 0);
     if (k.isButtonDown("left")) vec.x -= 1;
     if (k.isButtonDown("right")) vec.x += 1;
@@ -10,7 +19,47 @@ const getDirVector = () => {
     return vec;
 }
 
+function getVelocityVector(dir, dt, velocity){
+    /**
+     * Function to return the new velocity vector for the current frame based on the
+     * direction vector, previous velocity, and delta_t from last frame.
+     * @param  {vec2}   dir         direction vector
+     * @param  {number} dt          Delta time from previous frame
+     * @param  {vec2}   velocity    previous velocity
+     * @return {vec2}   Velocity vector for the current frame.
+    */
+    let new_Velocity = k.vec2(0, 0);
+    if (dir.len() > 0){
+        // accel
+        dir.unit();
+        new_Velocity = velocity.add(dir.scale(ACCEL * dt));
+    } else {
+        // decel
+        if (velocity.len() > 0){
+            const frictionVec = velocity.unit().scale(FRICTION * dt);
+            // prevent vector flip
+            if (frictionVec.len() > velocity.len()){
+                new_Velocity = k.vec2(0, 0);
+            } else {
+                new_Velocity = velocity.sub(frictionVec);
+            }
+        }
+    }
+    // clamp max velocity
+    if (new_Velocity.len() > MAX_VEL){
+        new_Velocity = new_Velocity.unit().scale(MAX_VEL);
+    }
+    return new_Velocity;
+}
+
 function clampShipToBounds(ship, velocity, k) {
+    /**
+     * Function to handle position and velocity clipping at the borders of the screen. The x and y values of the 
+     * velocity vector need to be zero'd out at the horizontal or vertical borders resectively. Prevents the borders from feeling "sticky".
+     * @param {GameObj}     ship        ship game object
+     * @param {vec2}        velocity    speed vector
+     * @param {KAPLAYCtx}   k           Kaplay Context
+     */
     // clamp to screen bounds
     const halfW = ship.width / 2;
     const halfH = ship.height / 2;
@@ -43,36 +92,13 @@ export default function game(menuSfx, shipYPos){
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
 
-    // movement vals
-    const ACCEL = 1500;
-    const MAX_VEL = 600;
-    const FRICTION = 800;
     let velocity = k.vec2(0, 0);
 
     k.onUpdate(() => {
         const dt = k.dt();
         const dir = getDirVector()
-
-        if (dir.len() > 0){
-            // accel
-            dir.unit();
-            velocity = velocity.add(dir.scale(ACCEL * dt));
-        } else {
-            // decel
-            if (velocity.len() > 0){
-                const frictionVec = velocity.unit().scale(FRICTION * dt);
-                // prevent vector flip
-                if (frictionVec.len() > velocity.len()){
-                    velocity = k.vec2(0, 0);
-                } else {
-                    velocity = velocity.sub(frictionVec);
-                }
-            }
-        }
-        // clamp max velocity
-        if (velocity.len() > MAX_VEL){
-            velocity = velocity.unit().scale(MAX_VEL);
-        }
+        velocity = getVelocityVector(dir, dt, velocity);
+        
         // update pos
         ship.pos = ship.pos.add(velocity.scale(dt));
         clampShipToBounds(ship, velocity, k);
