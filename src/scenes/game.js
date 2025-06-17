@@ -1,10 +1,15 @@
-import makeShip from "../entities/makeShip";
 import k from "../kaplayCtx";
+import makeShip from "../entities/makeShip";
+import makeAsteroid from "../entities/makeAsteroid";
 
 // movement vals
 const ACCEL = 1500;
 const MAX_VEL = 600;
 const FRICTION = 800;
+
+// asteroid spawning
+const SPAWN_INTERVAL = 1.0; // sec
+const ASTEROID_SPEED = 250;
 
 const getDirVector = () => {
     /**
@@ -87,13 +92,29 @@ function clampShipToBounds(ship, velocity, k) {
     }
 }
 
+function spawnAsteroid() {
+    const spawnX = k.rand(50, k.width() - 50);
+    const spawnY = k.rand(100);
+    const asteroid = makeAsteroid(k.vec2(spawnX, spawnY));
+    asteroid.onUpdate(() => {
+        asteroid.move(0, ASTEROID_SPEED);
+    });
+    asteroid.onExitScreen(() => {
+        if (asteroid.pos.y > k.height()){
+            k.destroy(asteroid);
+        }
+    });
+    k.wait(SPAWN_INTERVAL, spawnAsteroid);
+}
+
 export default function game(menuSfx, shipYPos){
     menuSfx.paused = true;
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
 
-    let velocity = k.vec2(0, 0);
+    spawnAsteroid();
 
+    let velocity = k.vec2(0, 0); // init vel
     k.onUpdate(() => {
         const dt = k.dt();
         const dir = getDirVector()
