@@ -4,7 +4,7 @@ export default function intro(){
     k.add([
     k.text(
       `
-        This is a free game make using assets from 
+        This is a free game made using assets from 
         Freesound, OpenGameArt and Sonic Mania. 
         Sonic is owned by SEGA.
       `,
@@ -13,7 +13,7 @@ export default function intro(){
   ]);
 
   k.add([
-    k.text("Press Space/Click/Touch to Start The Game", {
+    k.text("Click Any Key to Proceed", {
       font: "mania",
       size: 64,
     }),
@@ -21,5 +21,6 @@ export default function intro(){
     k.pos(k.center()),
   ]);
 
-  k.onMousePress("left", () => k.go("main-menu"));
+    k.onKeyPress(() => k.go("main-menu"));
+    k.onMousePress(() => k.go("main-menu"));
 }
