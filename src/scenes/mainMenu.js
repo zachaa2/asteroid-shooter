@@ -8,10 +8,6 @@ export default function mainMenu() {
         loop: true,
     });
     
-    k.onMousePress("left", () => {
-        k.go("game", menuSfx);
-    });
-
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
 
     k.add([
@@ -32,5 +28,9 @@ export default function mainMenu() {
     k.onUpdate(() => {
         ship.floatTime += k.dt();
         ship.pos.y = ship.floatOriginY + Math.sin(ship.floatTime * 1.75) * 20;
+    });
+
+    k.onMousePress("left", () => {
+        k.go("game", menuSfx, ship.pos.y);
     });
 }
