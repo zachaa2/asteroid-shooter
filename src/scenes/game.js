@@ -1,6 +1,7 @@
 import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
 import makeAsteroid from "../entities/makeAsteroid";
+import { fadeAudioOut } from "../utils/audioFade";
 
 // movement vals
 const ACCEL = 1500;
@@ -10,9 +11,6 @@ const FRICTION = 800;
 // asteroid spawning
 const SPAWN_INTERVAL = 1.0; // sec
 const ASTEROID_SPEED = 250;
-
-// audio
-const FADE_DURATION = 1.0; // sec
 
 const getDirVector = () => {
     /**
@@ -96,6 +94,9 @@ function clampShipToBounds(ship, velocity, k) {
 }
 
 function spawnAsteroid() {
+    /**
+     * Asteroid Spawner Routine.
+     */
     const spawnX = k.rand(50, k.width() - 50);
     const spawnY = k.rand(50);
     const asteroid = makeAsteroid(k.vec2(spawnX, spawnY));
@@ -111,9 +112,7 @@ function spawnAsteroid() {
 }
 
 export default function game(menuSfx, shipYPos){
-    let fadeOut = true;
-    let fadeTime = 0.0;
-
+    fadeAudioOut(menuSfx, 1.0);
     // add game objs to scene
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
@@ -124,16 +123,6 @@ export default function game(menuSfx, shipYPos){
     // game update loop
     k.onUpdate(() => {
         const dt = k.dt();
-        // menu audio fade
-        if (fadeOut && menuSfx.volume > 0){
-            fadeTime += dt;
-            const newVol = Math.max(0, 1 - fadeTime / FADE_DURATION);
-            menuSfx.volume = newVol;
-            if (newVol === 0) {
-                menuSfx.paused = true;
-                fadeOut = false;
-            }
-        }
 
         const dir = getDirVector()
         velocity = getVelocityVector(dir, dt, velocity);
