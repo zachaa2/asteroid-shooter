@@ -10,10 +10,10 @@ function makePolygon(n = 8, radius = 16) {
     return new k.Polygon(points);
   }
 
-export default function makeAsteroid(pos, speed = 200) {
+export default function makeAsteroid(pos) {
     const asteroid = k.add([
         k.sprite("asteroid", {anim: "spin"}),
-        k.scale(1),
+        k.scale(k.rand(0.8, 1.5)),
         k.opacity(1.0),
         k.area({ 
             shape: makePolygon(8, 64),

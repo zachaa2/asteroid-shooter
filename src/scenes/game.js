@@ -94,7 +94,7 @@ function clampShipToBounds(ship, velocity, k) {
 
 function spawnAsteroid() {
     const spawnX = k.rand(50, k.width() - 50);
-    const spawnY = k.rand(100);
+    const spawnY = k.rand(50);
     const asteroid = makeAsteroid(k.vec2(spawnX, spawnY));
     asteroid.onUpdate(() => {
         asteroid.move(0, ASTEROID_SPEED);
