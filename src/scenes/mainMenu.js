@@ -1,15 +1,23 @@
 import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
 
+// audio
+const FADE_DURATION = 1.0; // sec
+const TARGET_VOL = 0.8;
+
 export default function mainMenu() {
     if (!k.getData("high-score")) k.setData("high-score", 0);
+
+    // menu music
+    let fadeIn = true;
+    let fadeTime = 0.0;
     const menuSfx = k.play("menu-music", {
-        volume: 0.8,
+        volume: 0,
         loop: true,
     });
     
+    // entities
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
-
     k.add([
         k.text("ASTEROID SHOOTER", { font: "mania", size: 96}),
         k.anchor("center"),
@@ -25,11 +33,24 @@ export default function mainMenu() {
     ship.floatOriginY = ship.pos.y;
     ship.floatTime = 0;
 
+    // update loop
     k.onUpdate(() => {
-        ship.floatTime += k.dt();
+        const dt = k.dt();
+        // menu music fade in 
+        if (fadeIn && menuSfx.volume < 0.8){
+            fadeTime += dt;
+            const newVol = Math.min(TARGET_VOL, (fadeTime / FADE_DURATION) * TARGET_VOL);;
+            menuSfx.volume = newVol;
+            if (menuSfx.volume >= 0.8) { 
+                fadeIn = false;
+            }
+        }
+        // ship animation
+        ship.floatTime += dt;
         ship.pos.y = ship.floatOriginY + Math.sin(ship.floatTime * 1.75) * 20;
     });
 
+    // game navigation
     k.onMousePress("left", () => {
         k.go("game", menuSfx, ship.pos.y);
     });
