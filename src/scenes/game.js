@@ -11,6 +11,9 @@ const FRICTION = 800;
 const SPAWN_INTERVAL = 1.0; // sec
 const ASTEROID_SPEED = 250;
 
+// audio
+const FADE_DURATION = 1.0; // sec
+
 const getDirVector = () => {
     /**
      * Function to get the unnormalized direction vector of the ship, based on the movement key presses.
@@ -108,18 +111,32 @@ function spawnAsteroid() {
 }
 
 export default function game(menuSfx, shipYPos){
-    menuSfx.paused = true;
+    let fadeOut = true;
+    let fadeTime = 0.0;
+
+    // add game objs to scene
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
-
-    spawnAsteroid();
+    spawnAsteroid(); // asteroid spawner routine
 
     let velocity = k.vec2(0, 0); // init vel
+
+    // game update loop
     k.onUpdate(() => {
         const dt = k.dt();
+        // menu audio fade
+        if (fadeOut && menuSfx.volume > 0){
+            fadeTime += dt;
+            const newVol = Math.max(0, 1 - fadeTime / FADE_DURATION);
+            menuSfx.volume = newVol;
+            if (newVol === 0) {
+                menuSfx.paused = true;
+                fadeOut = false;
+            }
+        }
+
         const dir = getDirVector()
         velocity = getVelocityVector(dir, dt, velocity);
-        
         // update pos
         ship.pos = ship.pos.add(velocity.scale(dt));
         clampShipToBounds(ship, velocity, k);
