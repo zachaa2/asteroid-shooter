@@ -1,7 +1,7 @@
 import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
 import makeAsteroid from "../entities/makeAsteroid";
-import { fadeAudioOut } from "../utils/audioFade";
+import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
 
 // movement vals
 const ACCEL = 1500;
@@ -113,6 +113,12 @@ function spawnAsteroid() {
 
 export default function game(menuSfx, shipYPos){
     fadeAudioOut(menuSfx, 1.0);
+    const gameMusicSfx = k.play("game-music", {
+        volume: 0.0,
+        loop: true,
+    });
+    fadeAudioIn(gameMusicSfx, 0.65, 0.5);
+
     // add game objs to scene
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
