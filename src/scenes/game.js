@@ -2,6 +2,7 @@ import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
 import makeAsteroid from "../entities/makeAsteroid";
 import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
+import makeBullet from "../entities/makeBullet";
 
 // movement vals
 const ACCEL = 1500;
@@ -124,8 +125,12 @@ export default function game(menuSfx, shipYPos){
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
     spawnAsteroid(); // asteroid spawner routine
 
-    let velocity = k.vec2(0, 0); // init vel
+    k.onMousePress("left", () => {
+        const bulletLeft = makeBullet(k.vec2(ship.pos.x - 72, ship.pos.y - 40));
+        const bulletRight = makeBullet(k.vec2(ship.pos.x + 72, ship.pos.y - 40));
+    });
 
+    let velocity = k.vec2(0, 0); // init vel
     // game update loop
     k.onUpdate(() => {
         const dt = k.dt();

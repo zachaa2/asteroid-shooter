@@ -21,6 +21,7 @@ k.loadSprite("ship", "graphics/ship_6x.png", {
         idle: { from: 0, to: 15, loop: true, speed: 20 }
     }
 });
+k.loadSprite("bullet", "graphics/bullet.png");
 
 // ----- LOAD FONTS ----- //
 k.loadFont("mania", "fonts/mania.ttf");
