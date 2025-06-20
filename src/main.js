@@ -22,6 +22,13 @@ k.loadSprite("ship", "graphics/ship_6x.png", {
         idle: { from: 0, to: 15, loop: true, speed: 20 }
     }
 });
+k.loadSprite("ship-explosion", "graphics/explosion_6x.png", {
+    sliceX: 4, 
+    sliceY: 2,
+    anims: {
+        explode: { from: 0, to: 7, speed: 30 },
+    },
+});
 k.loadSprite("bullet", "graphics/bullet.png");
 
 // ----- LOAD FONTS ----- //
