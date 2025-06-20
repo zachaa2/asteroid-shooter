@@ -3,18 +3,14 @@ import makeShip from "../entities/makeShip";
 import makeAsteroid from "../entities/makeAsteroid";
 import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
 import makeBullet from "../entities/makeBullet";
+import {
+    ACCEL, 
+    FRICTION,
+    SPAWN_INTERVAL,
+    FIRE_COOLDOWN,
+    MAX_VEL,
+} from "../utils/constants.js";
 
-// movement vals
-const ACCEL = 1500;
-const MAX_VEL = 600;
-const FRICTION = 800;
-
-// asteroid spawning
-const SPAWN_INTERVAL = 1.0; // sec
-const ASTEROID_SPEED = 250;
-
-// bullet cooldown
-const FIRE_COOLDOWN = 0.25;
 
 const getDirVector = () => {
     /**
@@ -104,14 +100,6 @@ function spawnAsteroid() {
     const spawnX = k.rand(50, k.width() - 50);
     const spawnY = k.rand(50);
     const asteroid = makeAsteroid(k.vec2(spawnX, spawnY));
-    asteroid.onUpdate(() => {
-        asteroid.move(0, ASTEROID_SPEED);
-    });
-    asteroid.onExitScreen(() => {
-        if (asteroid.pos.y > k.height()){
-            k.destroy(asteroid);
-        }
-    });
     k.wait(SPAWN_INTERVAL, spawnAsteroid);
 }
 

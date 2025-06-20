@@ -8,9 +8,10 @@ k.loadSprite("space-bg", "graphics/bg_space.png");
 
 k.loadSprite("asteroid", "graphics/asteroid_6x.png", {
     sliceX: 4,
-    sliceY: 2,
+    sliceY: 4,
     anims: {
-        spin: { from: 0, to: 7, loop: true, speed: 20 } 
+        spin: { from: 0, to: 7, loop: true, speed: 20 },
+        explosion: { from: 8, to: 15, speed: 30 },
     }
 });
 

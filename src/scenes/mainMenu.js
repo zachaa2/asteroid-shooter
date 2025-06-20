@@ -2,10 +2,6 @@ import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
 import { fadeAudioIn } from "../utils/audioFade.js";
 
-// audio
-const FADE_DURATION = 1.0; // sec
-const TARGET_VOL = 0.8;
-
 export default function mainMenu() {
     if (!k.getData("high-score")) k.setData("high-score", 0);
 
