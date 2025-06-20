@@ -9,7 +9,7 @@ export default function mainMenu() {
         volume: 0,
         loop: true,
     });
-    fadeAudioIn(menuSfx, 0.8, 1.0);
+    fadeAudioIn(menuSfx, 0.6, 1.0);
     
     // entities
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);

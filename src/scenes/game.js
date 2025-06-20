@@ -109,7 +109,7 @@ export default function game(menuSfx, shipYPos){
         volume: 0.0,
         loop: true,
     });
-    fadeAudioIn(gameMusicSfx, 0.55, 0.5);
+    fadeAudioIn(gameMusicSfx, 0.40, 0.5);
 
     // add game objs to scene
     let score = 0;
@@ -127,6 +127,7 @@ export default function game(menuSfx, shipYPos){
     let canFire = true;
     k.onMousePress("left", () => {
         if (canFire){
+            const bulletSfx = k.play("bullet-sound", { volume: 0.45 });
             canFire = false;
             const bulletLeft = makeBullet(k.vec2(ship.pos.x - 72, ship.pos.y - 40));
             const bulletRight = makeBullet(k.vec2(ship.pos.x + 72, ship.pos.y - 40));

@@ -5,7 +5,7 @@ export default function intro(){
     k.text(
       `
         This is a free game made using assets from 
-        Freesound, OpenGameArt and Sonic Mania. 
+        ZapSplat, Freesound, OpenGameArt and Sonic Mania. 
         Sonic is owned by SEGA.
       `,
       { font: "mania", size: 38 }

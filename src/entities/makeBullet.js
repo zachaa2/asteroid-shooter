@@ -26,6 +26,7 @@ export default function makeBullet(pos) {
         asteroid.use(k.area({
             shape: new k.Polygon([k.vec2(0, 0), k.vec2(0, 1), k.vec2(1, 0)]), // dummy hitbox
         }));
+        k.play("explosion", { volume: 0.6 });
         asteroid.play("explosion");
         k.trigger("asteroid-destroyed", "score-text");
         k.wait(8 / 30, () => { // NOTE: (8 frame animation / speed of animation)

@@ -30,6 +30,8 @@ k.loadFont("mania", "fonts/mania.ttf");
 // ----- LOAD AUDIO ----- //
 k.loadSound("menu-music", "sounds/deep-space.mp3");
 k.loadSound("game-music", "sounds/game-music.mp3");
+k.loadSound("bullet-sound", "sounds/laser-zap.mp3");
+k.loadSound("explosion", "sounds/explosion.mp3");
 
 // ----- LOAD SCENES ----- //
 k.scene("intro", intro);
