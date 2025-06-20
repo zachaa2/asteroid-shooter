@@ -11,3 +11,6 @@ export const ASTEROID_SPEED = 250;
 export const FIRE_COOLDOWN = 0.25;
 export const BULLET_SPEED = 1000;
 export const BULLET_LIFESPAN = 1.5;
+
+// background
+export const SCROLL_SPEED = 1500; 

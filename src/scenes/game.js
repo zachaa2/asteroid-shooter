@@ -2,6 +2,7 @@ import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
 import makeAsteroid from "../entities/makeAsteroid";
 import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
+import scrollBackground from "../utils/scrollbackground.js";
 import makeBullet from "../entities/makeBullet";
 import {
     ACCEL, 
@@ -99,11 +100,11 @@ function spawnAsteroid() {
      */
     const spawnX = k.rand(50, k.width() - 50);
     const spawnY = k.rand(50);
-    const asteroid = makeAsteroid(k.vec2(spawnX, spawnY));
+    const asteroid = makeAsteroid(k.vec2(spawnX, spawnY), k.rand(0.8 / 6, 1.5 / 6));
     k.wait(SPAWN_INTERVAL, spawnAsteroid);
 }
 
-export default function game(menuSfx, shipYPos){
+export default function game(menuSfx, shipYPos, bg1YPos, bg2YPos){
     fadeAudioOut(menuSfx, 1.0);
     const gameMusicSfx = k.play("game-music", {
         volume: 0.0,
@@ -120,7 +121,8 @@ export default function game(menuSfx, shipYPos){
         k.pos(24, 24),
         "score-text",
     ]);
-    k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
+    const bg1 = k.add([k.sprite("space-bg"), k.pos(0, bg1YPos), k.anchor("topleft"), k.scale(1), k.opacity(0.8)]);
+    const bg2 = k.add([k.sprite("space-bg"), k.pos(0, bg2YPos), k.anchor("topleft"), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
     spawnAsteroid(); // asteroid spawner routine
 
@@ -146,6 +148,7 @@ export default function game(menuSfx, shipYPos){
     // game update loop
     k.onUpdate(() => {
         const dt = k.dt();
+        scrollBackground(bg1, bg2, dt);
 
         const dir = getDirVector()
         velocity = getVelocityVector(dir, dt, velocity);

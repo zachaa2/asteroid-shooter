@@ -2,10 +2,10 @@ import k from "../kaplayCtx";
 import { makePolygonHitbox }from "../utils/makeHitbox.js"
 import { ASTEROID_SPEED } from "../utils/constants.js";
 
-export default function makeAsteroid(pos) {
+export default function makeAsteroid(pos, scale) {
     const asteroid = k.add([
         k.sprite("asteroid", {anim: "spin"}),
-        k.scale(k.rand(0.8 / 6, 1.5 / 6)),
+        k.scale(scale),
         k.opacity(1.0),
         k.area({ 
             shape: makePolygonHitbox(8, 360),
@@ -15,6 +15,9 @@ export default function makeAsteroid(pos) {
         k.body(),
         k.offscreen(),
         "asteroid",
+        {
+          scaleSize: scale,
+        }
     ]);
     // asteroid object handlers
     asteroid.moveHandler = asteroid.onUpdate(() => {
