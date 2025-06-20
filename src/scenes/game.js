@@ -13,6 +13,9 @@ const FRICTION = 800;
 const SPAWN_INTERVAL = 1.0; // sec
 const ASTEROID_SPEED = 250;
 
+// bullet cooldown
+const FIRE_COOLDOWN = 0.25;
+
 const getDirVector = () => {
     /**
      * Function to get the unnormalized direction vector of the ship, based on the movement key presses.
@@ -118,16 +121,23 @@ export default function game(menuSfx, shipYPos){
         volume: 0.0,
         loop: true,
     });
-    fadeAudioIn(gameMusicSfx, 0.65, 0.5);
+    fadeAudioIn(gameMusicSfx, 0.55, 0.5);
 
     // add game objs to scene
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
     spawnAsteroid(); // asteroid spawner routine
 
+    let canFire = true;
     k.onMousePress("left", () => {
-        const bulletLeft = makeBullet(k.vec2(ship.pos.x - 72, ship.pos.y - 40));
-        const bulletRight = makeBullet(k.vec2(ship.pos.x + 72, ship.pos.y - 40));
+        if (canFire){
+            canFire = false;
+            const bulletLeft = makeBullet(k.vec2(ship.pos.x - 72, ship.pos.y - 40));
+            const bulletRight = makeBullet(k.vec2(ship.pos.x + 72, ship.pos.y - 40));
+            k.wait(FIRE_COOLDOWN, () => {
+                canFire = true;
+            });
+        }
     });
 
     let velocity = k.vec2(0, 0); // init vel

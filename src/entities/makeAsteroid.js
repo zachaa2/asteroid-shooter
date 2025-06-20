@@ -1,14 +1,5 @@
 import k from "../kaplayCtx";
-
-function makePolygon(n = 8, radius = 16) {
-    const points = [];
-    const step = (2 * Math.PI) / n;
-    for (let i = 0; i < n; i++) {
-      const angle = i * step;
-      points.push(k.vec2(Math.cos(angle) * radius, Math.sin(angle) * radius));
-    }
-    return new k.Polygon(points);
-  }
+import { makePolygonHitbox }from "../utils/makeHitbox.js"
 
 export default function makeAsteroid(pos) {
     const asteroid = k.add([
@@ -16,7 +7,7 @@ export default function makeAsteroid(pos) {
         k.scale(k.rand(0.8, 1.5)),
         k.opacity(1.0),
         k.area({ 
-            shape: makePolygon(8, 64),
+            shape: makePolygonHitbox(8, 64),
         }),
         k.anchor("center"),
         k.pos(pos),
