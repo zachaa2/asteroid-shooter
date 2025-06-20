@@ -49,7 +49,7 @@ export default function makeShip(pos){
         ]);
         k.wait(8 / 30, () => {
             k.destroy(explosion);
-            // TODO: trigger a game over event and handle in the game scene - probably better to have scenes navigate to other scenes.
+            k.trigger("ship-destroyed", "score-text");
         });
     });
     

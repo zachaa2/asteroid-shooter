@@ -156,4 +156,12 @@ export default function game(menuSfx, shipYPos, bg1YPos, bg2YPos){
         ship.pos = ship.pos.add(velocity.scale(dt));
         clampShipToBounds(ship, velocity, k);
     });
+
+    k.on("ship-destroyed", "score-text", (obj) => {
+        k.setData("current-score", score);
+        if (score > k.getData("high-score")){
+            k.setData("high-score", score);
+        } 
+        k.go("game-over", gameMusicSfx);
+    });
 }

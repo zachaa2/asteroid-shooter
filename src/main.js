@@ -2,6 +2,7 @@ import k from "./kaplayCtx";
 import mainMenu from "./scenes/mainMenu";
 import intro from "./scenes/intro";
 import game from "./scenes/game";
+import gameOver from "./scenes/gameOver";
 
 // ----- LOAD GRAPHICS ----- //
 k.loadSprite("space-bg", "graphics/bg_space.png");
@@ -44,7 +45,7 @@ k.loadSound("explosion", "sounds/explosion.mp3");
 k.scene("intro", intro);
 k.scene("main-menu", mainMenu);
 k.scene("game", game);
-k.scene("game-over", () => {});
+k.scene("game-over", gameOver);
 
 // ----- INIT GAME ----- //
 k.go("intro");
