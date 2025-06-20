@@ -1,5 +1,6 @@
 import k from "../kaplayCtx";
 import { makePolygonHitbox } from "../utils/makeHitbox";
+import { BULLET_LIFESPAN, BULLET_SPEED } from "../utils/constants";
 
 export default function makeBullet(pos) {
     const bullet = k.add([
@@ -11,8 +12,8 @@ export default function makeBullet(pos) {
         k.anchor("center"),
         k.pos(pos),
         k.opacity(0.9),
-        k.move(k.UP, 1000),
-        k.lifespan(1.5),
+        k.move(k.UP, BULLET_SPEED),
+        k.lifespan(BULLET_LIFESPAN),
         k.offscreen({destroy: true}),
         "bullet",
     ]);
@@ -26,6 +27,7 @@ export default function makeBullet(pos) {
             shape: new k.Polygon([k.vec2(0, 0), k.vec2(0, 1), k.vec2(1, 0)]), // dummy hitbox
         }));
         asteroid.play("explosion");
+        k.trigger("asteroid-destroyed", "score-text");
         k.wait(8 / 30, () => { // NOTE: (8 frame animation / speed of animation)
             k.destroy(asteroid);
         });

@@ -112,6 +112,14 @@ export default function game(menuSfx, shipYPos){
     fadeAudioIn(gameMusicSfx, 0.55, 0.5);
 
     // add game objs to scene
+    let score = 0;
+    const scoreLabel = k.add([
+        k.text(score.toString(), { size: 96, font: "mania" }),
+        k.color(255, 255, 255),
+        k.anchor("topleft"),
+        k.pos(24, 24),
+        "score-text",
+    ]);
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
     const ship = makeShip(k.vec2(k.center().x, shipYPos));
     spawnAsteroid(); // asteroid spawner routine
@@ -126,6 +134,11 @@ export default function game(menuSfx, shipYPos){
                 canFire = true;
             });
         }
+    });
+
+    k.on("asteroid-destroyed", "score-text", (obj) => { // fired from bullet collision handler 
+        score++;
+        obj.text = score.toString();
     });
 
     let velocity = k.vec2(0, 0); // init vel
