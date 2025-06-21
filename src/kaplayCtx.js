@@ -19,6 +19,9 @@ const k = kaplay({
         right: {
             keyboard: ["d", "right"]
         },
+        restart: {
+            keyboard: ["space", "enter"]
+        },
     },
     touchToMouse: true,
     debugKey: 'd',

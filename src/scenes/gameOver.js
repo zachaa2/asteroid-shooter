@@ -30,4 +30,15 @@ export default function gameOver(){
         k.anchor("center"),
         k.pos(k.center().x, k.center().y),
     ]);
+
+    k.add([
+        k.text("Press ENTER or SPACE to restart", { size: 64, font: "mania" }),
+        k.anchor("center"),
+        k.pos(k.center().x, k.height() - 100),
+    ]);
+
+    k.onButtonPress("restart", () => {
+        k.go("game", gameOverSfx, k.center().y, 0, -k.height());
+    });
+
 }
