@@ -4,7 +4,7 @@ export const MAX_VEL = 600;
 export const FRICTION = 800;
 
 // asteroid spawning
-export const SPAWN_INTERVAL = 1.0; // sec
+export const SPAWN_INTERVAL = 0.5; // sec
 export const ASTEROID_SPEED = 350;
 export const MIN_ASTEROID_SCALE = 0.8;
 export const MAX_ASTEROID_SCALE = 1.5;

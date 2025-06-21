@@ -21,7 +21,7 @@ export default function makeAsteroid(pos, scale) {
     ]);
     // asteroid object handlers
     asteroid.moveHandler = asteroid.onUpdate(() => {
-      const factor = (MAX_ASTEROID_SCALE - MIN_ASTEROID_SCALE) / (asteroid.scaleSize * 6);
+      const factor = 1.5 * (MAX_ASTEROID_SCALE - MIN_ASTEROID_SCALE) / (asteroid.scaleSize * 6);
       asteroid.move(0, ASTEROID_SPEED * factor);
     });
     asteroid.screenHandler = asteroid.onExitScreen(() => {
