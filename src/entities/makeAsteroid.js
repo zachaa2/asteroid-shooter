@@ -1,6 +1,6 @@
 import k from "../kaplayCtx";
 import { makePolygonHitbox }from "../utils/makeHitbox.js"
-import { ASTEROID_SPEED } from "../utils/constants.js";
+import { ASTEROID_SPEED, MAX_ASTEROID_SCALE, MIN_ASTEROID_SCALE } from "../utils/constants.js";
 
 export default function makeAsteroid(pos, scale) {
     const asteroid = k.add([
@@ -21,7 +21,8 @@ export default function makeAsteroid(pos, scale) {
     ]);
     // asteroid object handlers
     asteroid.moveHandler = asteroid.onUpdate(() => {
-      asteroid.move(0, ASTEROID_SPEED);
+      const factor = (MAX_ASTEROID_SCALE - MIN_ASTEROID_SCALE) / (asteroid.scaleSize * 6);
+      asteroid.move(0, ASTEROID_SPEED * factor);
     });
     asteroid.screenHandler = asteroid.onExitScreen(() => {
       if (asteroid.pos.y > k.height()){

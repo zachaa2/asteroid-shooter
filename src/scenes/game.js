@@ -10,7 +10,10 @@ import {
     SPAWN_INTERVAL,
     FIRE_COOLDOWN,
     MAX_VEL,
+    MIN_ASTEROID_SCALE,
+    MAX_ASTEROID_SCALE,
 } from "../utils/constants.js";
+ "../utils/constants.js";
 
 
 const getDirVector = () => {
@@ -100,7 +103,7 @@ function spawnAsteroid() {
      */
     const spawnX = k.rand(50, k.width() - 50);
     const spawnY = k.rand(50);
-    const asteroid = makeAsteroid(k.vec2(spawnX, spawnY), k.rand(0.8 / 6, 1.5 / 6));
+    const asteroid = makeAsteroid(k.vec2(spawnX, spawnY), k.rand(MIN_ASTEROID_SCALE / 6, MAX_ASTEROID_SCALE / 6));
     k.wait(SPAWN_INTERVAL, spawnAsteroid);
 }
 
