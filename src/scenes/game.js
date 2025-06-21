@@ -4,6 +4,7 @@ import makeAsteroid from "../entities/makeAsteroid";
 import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
 import scrollBackground from "../utils/scrollbackground.js";
 import makeBullet from "../entities/makeBullet";
+import makeScoreBooster from "../entities/makeScoreBooster.js";
 import {
     ACCEL, 
     FRICTION,
@@ -13,8 +14,24 @@ import {
     MIN_ASTEROID_SCALE,
     MAX_ASTEROID_SCALE,
 } from "../utils/constants.js";
+import spawnBooster from "../utils/spawnBooster.js";
  "../utils/constants.js";
 
+const activeBoosters = { // keep track of each booster object active in the game scene
+    2: null,
+    3: null, 
+    5: null,
+}
+
+function spawnBoosterRoutine(){
+    const roll = k.rand(0, 1);
+    if (roll < 0.4) spawnBooster(activeBoosters, 2);
+    else if (roll < 0.65) spawnBooster(activeBoosters, 3);
+    else if (roll < 0.8) spawnBooster(activeBoosters, 5);
+    k.wait(4, () => {
+        spawnBoosterRoutine();
+    });
+}
 
 const getDirVector = () => {
     /**
@@ -129,6 +146,7 @@ export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
     const ship = makeShip(k.vec2(k.center().x, shipYPos), gameMusicSfx);
     spawnAsteroid(); // asteroid spawner routine
 
+    // bullet fire
     let canFire = true;
     k.onMousePress("left", () => {
         if (canFire){
@@ -142,6 +160,14 @@ export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
         }
     });
 
+    // booster spawner loop
+    k.wait(5, () => {
+        spawnBoosterRoutine();
+    })
+    
+    // TODO: handle booster collision
+
+    // bullet-asteroid collision
     k.on("asteroid-destroyed", "score-text", (obj) => { // fired from bullet collision handler 
         score++;
         obj.text = score.toString();
@@ -160,6 +186,7 @@ export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
         clampShipToBounds(ship, velocity, k);
     });
 
+    // player dies
     k.on("ship-destroyed", "score-text", (obj) => {
         k.setData("current-score", score);
         if (score > k.getData("high-score")){

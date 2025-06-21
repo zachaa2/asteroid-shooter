@@ -15,4 +15,11 @@ export const BULLET_SPEED = 1000;
 export const BULLET_LIFESPAN = 1.5;
 
 // background
-export const SCROLL_SPEED = 1500; 
+export const SCROLL_SPEED = 1500;
+
+// score booster
+export const BOOSTER_LIFESPAN = {
+    2: 10,
+    3: 7,
+    5: 4,
+};

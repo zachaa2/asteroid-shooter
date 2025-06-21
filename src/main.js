@@ -30,6 +30,27 @@ k.loadSprite("ship-explosion", "graphics/explosion_6x.png", {
         explode: { from: 0, to: 7, speed: 30 },
     },
 });
+k.loadSprite("double-booster", "graphics/double_booster.png", {
+    sliceX: 4,
+    sliceY: 2,
+    anims: {
+        idle: { from: 0, to: 7, loop: true, speed: 20 },
+    },
+});
+k.loadSprite("triple-booster", "graphics/triple_booster.png", {
+    sliceX: 4,
+    sliceY: 2,
+    anims: {
+        idle: { from: 0, to: 7, loop: true, speed: 20 },
+    },
+});
+k.loadSprite("mega-booster", "graphics/mega_booster.png", {
+    sliceX: 4,
+    sliceY: 2,
+    anims: {
+        idle: { from: 0, to: 7, loop: true, speed: 20 },
+    },
+});
 k.loadSprite("bullet", "graphics/bullet.png");
 
 // ----- LOAD FONTS ----- //
