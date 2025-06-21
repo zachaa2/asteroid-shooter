@@ -107,8 +107,8 @@ function spawnAsteroid() {
     k.wait(SPAWN_INTERVAL, spawnAsteroid);
 }
 
-export default function game(menuSfx, shipYPos, bg1YPos, bg2YPos){
-    fadeAudioOut(menuSfx, 1.0);
+export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
+    fadeAudioOut(sfx, 1.0);
     const gameMusicSfx = k.play("game-music", {
         volume: 0.0,
         loop: true,
@@ -126,7 +126,7 @@ export default function game(menuSfx, shipYPos, bg1YPos, bg2YPos){
     ]);
     const bg1 = k.add([k.sprite("space-bg"), k.pos(0, bg1YPos), k.anchor("topleft"), k.scale(1), k.opacity(0.8)]);
     const bg2 = k.add([k.sprite("space-bg"), k.pos(0, bg2YPos), k.anchor("topleft"), k.scale(1), k.opacity(0.8)]);
-    const ship = makeShip(k.vec2(k.center().x, shipYPos));
+    const ship = makeShip(k.vec2(k.center().x, shipYPos), gameMusicSfx);
     spawnAsteroid(); // asteroid spawner routine
 
     let canFire = true;

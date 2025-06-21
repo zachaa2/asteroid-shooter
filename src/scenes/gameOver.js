@@ -1,11 +1,15 @@
 import k from "../kaplayCtx";
-import { fadeAudioOut } from "../utils/audioFade";
+import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
 
-export default function gameOver(gameMusicSfx){
-    fadeAudioOut(gameMusicSfx, 0.25);
+export default function gameOver(){
     const highScore = k.getData("high-score");
     const currScore = k.getData("current-score");
-    
+    const gameOverSfx = k.play("outro", { 
+        volume: 0.0, 
+        loop: true 
+    });
+    fadeAudioIn(gameOverSfx, 0.7, 1.5);
+
     // temp Background
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);
 

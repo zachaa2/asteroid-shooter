@@ -1,7 +1,13 @@
 import k from "../kaplayCtx";
 import { makeShipHitbox } from "../utils/makeHitbox.js";
 
-export default function makeShip(pos){
+export default function makeShip(pos, gameSfx) {
+    /**
+     * function to make the ship game object
+     * @param {vec2}        pos         position to put the ship
+     * @param {GameObj}     gameSfx     game music sound object. Needed to the collision handler can pause it.  
+     * @return {GameObj}    the ship game object to the caller
+     */
     const ship = k.add([
         k.sprite("ship", {anim: "idle"}),
         k.scale(1), 
@@ -16,7 +22,7 @@ export default function makeShip(pos){
             isDestroyed: false,
         },
     ]);
-
+    ship.gameSfx = gameSfx;
     ship.collisionHandler = ship.onCollide("asteroid", (asteroid) => {
         // handle ship
         if (ship.isDestroyed) return;
@@ -47,10 +53,16 @@ export default function makeShip(pos){
             k.pos(ship.pos.x, ship.pos.y),
             k.anchor("center"),
         ]);
-        k.wait(8 / 30, () => {
-            k.destroy(explosion);
-            k.trigger("ship-destroyed", "score-text");
+        k.wait(8 / 30, () => { 
+            k.destroy(explosion); 
+            gameSfx.paused = true;
+            k.play("game-over", { volume: 0.9 });
+            k.wait(0.45, () => {
+                k.trigger("ship-destroyed", "score-text"); 
+            });
         });
+        
+        
     });
     
     return ship;
