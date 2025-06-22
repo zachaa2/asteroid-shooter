@@ -1,5 +1,4 @@
 import k from "../kaplayCtx";
-import { BOOSTER_LIFESPAN } from "../utils/constants";
 
 export default function makeScoreBooster(pos, multiplier){
     let spriteName = "";
@@ -32,5 +31,10 @@ export default function makeScoreBooster(pos, multiplier){
             value: multiplier
         },
     ]);
+    booster.shipCollisionHandler = booster.onCollide("ship", () => {
+        k.trigger("booster-collected", "score-text", booster.value);
+        k.destroy(booster);
+    });
+
     return booster;
 }

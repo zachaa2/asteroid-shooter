@@ -4,7 +4,8 @@ import makeAsteroid from "../entities/makeAsteroid";
 import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
 import scrollBackground from "../utils/scrollbackground.js";
 import makeBullet from "../entities/makeBullet";
-import makeScoreBooster from "../entities/makeScoreBooster.js";
+import spawnBooster from "../utils/spawnBooster.js";
+import makeBoosterUI, { destroyBoosterUI } from "../entities/makeBoosterUI.js";
 import {
     ACCEL, 
     FRICTION,
@@ -12,24 +13,18 @@ import {
     FIRE_COOLDOWN,
     MAX_VEL,
     MIN_ASTEROID_SCALE,
-    MAX_ASTEROID_SCALE,
+    MAX_ASTEROID_SCALE, 
+    BOOSTER_DURATION,
+    BOOSTER_SPAWN_INTERVAL,
 } from "../utils/constants.js";
-import spawnBooster from "../utils/spawnBooster.js";
- "../utils/constants.js";
 
-const activeBoosters = { // keep track of each booster object active in the game scene
-    2: null,
-    3: null, 
-    5: null,
-}
-
-function spawnBoosterRoutine(){
+function spawnBoosterRoutine(activeBoosters){
     const roll = k.rand(0, 1);
-    if (roll < 0.4) spawnBooster(activeBoosters, 2);
-    else if (roll < 0.65) spawnBooster(activeBoosters, 3);
-    else if (roll < 0.8) spawnBooster(activeBoosters, 5);
-    k.wait(4, () => {
-        spawnBoosterRoutine();
+    if (roll < 0.45) spawnBooster(activeBoosters, 2);
+    else if (roll < 0.75) spawnBooster(activeBoosters, 3);
+    else spawnBooster(activeBoosters, 5);
+    k.wait(BOOSTER_SPAWN_INTERVAL, () => {
+        spawnBoosterRoutine(activeBoosters);
     });
 }
 
@@ -125,6 +120,13 @@ function spawnAsteroid() {
 }
 
 export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
+    const activeBoosters = { // keep track of each booster object active in the game scene
+        2: null,
+        3: null, 
+        5: null,
+    };
+    let currentBoostUI = null; // boost UI singleton
+
     fadeAudioOut(sfx, 1.0);
     const gameMusicSfx = k.play("game-music", {
         volume: 0.0,
@@ -134,6 +136,7 @@ export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
 
     // add game objs to scene
     let score = 0;
+    let boost = 1;
     const scoreLabel = k.add([
         k.text(score.toString(), { size: 96, font: "mania" }),
         k.color(255, 255, 255),
@@ -161,15 +164,30 @@ export default function game(sfx, shipYPos, bg1YPos, bg2YPos){
     });
 
     // booster spawner loop
-    k.wait(5, () => {
-        spawnBoosterRoutine();
+    k.wait(BOOSTER_SPAWN_INTERVAL, () => {
+        spawnBoosterRoutine(activeBoosters);
     })
-    
-    // TODO: handle booster collision
+    // handle booster logic
+    k.on("booster-collected", "score-text", (obj, multiplier) => {  
+        score += parseInt(multiplier);
+        const newBoost = parseInt(multiplier); 
+
+        if (currentBoostUI && newBoost < boost) return;
+        if (currentBoostUI) {  // clear old ui comp
+            destroyBoosterUI(currentBoostUI);
+        }
+        boost = newBoost;
+        currentBoostUI = makeBoosterUI(boost, BOOSTER_DURATION);
+        obj.text = score.toString();
+    });
+    k.on("reset-boost", "ship", (obj) => {
+        boost = 1;
+    });
+
 
     // bullet-asteroid collision
     k.on("asteroid-destroyed", "score-text", (obj) => { // fired from bullet collision handler 
-        score++;
+        score += boost;
         obj.text = score.toString();
     });
 

@@ -23,3 +23,5 @@ export const BOOSTER_LIFESPAN = {
     3: 7,
     5: 4,
 };
+export const BOOSTER_DURATION = 5;
+export const BOOSTER_SPAWN_INTERVAL = 4;
