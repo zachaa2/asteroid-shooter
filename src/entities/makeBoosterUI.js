@@ -57,14 +57,3 @@ export default function makeBoosterUI(multiplier, duration){
     });
     return { multiplier, bar, bar_bg, text, handle };
 }
-
-export function destroyBoosterUI(boost) {
-    /**
-     * Util for cleaning up the boost UI comp when not needed
-     * @param {Object} boost    boost UI game objects/update handle in an object
-     */
-    k.destroy(boost.text);
-    k.destroy(boost.bar);
-    k.destroy(boost.bar_bg);
-    boost.handle.cancel();
-}

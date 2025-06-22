@@ -4,8 +4,8 @@ import makeAsteroid from "../entities/makeAsteroid";
 import { fadeAudioIn, fadeAudioOut } from "../utils/audioFade";
 import scrollBackground from "../utils/scrollbackground.js";
 import makeBullet from "../entities/makeBullet";
-import spawnBooster from "../utils/spawnBooster.js";
-import makeBoosterUI, { destroyBoosterUI } from "../entities/makeBoosterUI.js";
+import makeBoosterUI from "../entities/makeBoosterUI.js";
+import { spawnBooster, destroyBoosterUI } from "../utils/boosterUtils.js";
 import {
     ACCEL, 
     FRICTION,
