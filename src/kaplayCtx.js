@@ -25,7 +25,7 @@ const k = kaplay({
     },
     touchToMouse: true,
     debugKey: 'd',
-    debug: true, // TODO: change to false in prod
+    debug: false, // TODO: change to false in prod
 });
 
 export default k;
