@@ -29,11 +29,13 @@ export default function makeScoreBooster(pos, multiplier){
         }),
         k.anchor("center"),
         k.pos(pos),
-        k.shader("cooldown-shader", () => {
-            const progress = Math.min(Math.max(1 - timeLeft / totalTime, 0), 1) / 36;
-            console.log(progress);
-            return { u_progress: progress}
-        }),
+        k.shader("cooldown-shader", () => ({
+            u_time_left: timeLeft,
+            u_total_time: totalTime,
+            u_time: k.time(),
+            u_flash_threshold: 0.10, 
+            u_flash_freq: 5.0,
+        })),
         "booster",
         {
             value: multiplier,
