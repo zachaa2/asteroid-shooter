@@ -3,8 +3,10 @@ import mainMenu from "./scenes/mainMenu";
 import intro from "./scenes/intro";
 import game from "./scenes/game";
 import gameOver from "./scenes/gameOver";
+import loadCooldownShader from "./shaders/cooldownShader";
 
 // ----- LOAD GRAPHICS ----- //
+loadCooldownShader();
 k.loadSprite("space-bg", "graphics/bg_space.png");
 
 k.loadSprite("asteroid", "graphics/asteroid_6x.png", {

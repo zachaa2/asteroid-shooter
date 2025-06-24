@@ -47,7 +47,7 @@ export default function makeBoosterUI(multiplier, duration){
         bar.timeLeft -= k.dt();
         const progress = Math.max(bar.timeLeft / bar.totTime, 0);
         bar.width = bar.maxWidth * progress;
-        if (bar.timeLeft <= 0){
+        if (bar.timeLeft <= 0) { // self destruct ui comp
             k.destroy(bar_bg);
             k.destroy(bar);
             k.destroy(text);

@@ -1,4 +1,5 @@
 import k from "../kaplayCtx";
+import { BOOSTER_LIFESPAN } from "../utils/constants";
 
 export default function makeScoreBooster(pos, multiplier){
     let spriteName = "";
@@ -16,6 +17,8 @@ export default function makeScoreBooster(pos, multiplier){
         default:
             return;
     }
+    const totalTime = BOOSTER_LIFESPAN[multiplier];
+    let timeLeft = totalTime;
 
     const booster = k.add([
         k.sprite(spriteName, { anim: "idle"}),
@@ -26,14 +29,24 @@ export default function makeScoreBooster(pos, multiplier){
         }),
         k.anchor("center"),
         k.pos(pos),
+        k.shader("cooldown-shader", () => {
+            const progress = Math.min(Math.max(1 - timeLeft / totalTime, 0), 1) / 36;
+            console.log(progress);
+            return { u_progress: progress}
+        }),
         "booster",
         {
-            value: multiplier
+            value: multiplier,
         },
     ]);
+    // collision handler
     booster.shipCollisionHandler = booster.onCollide("ship", () => {
         k.trigger("booster-collected", "score-text", booster.value);
         k.destroy(booster);
+    });
+    // update time left
+    booster.onUpdate(() => {
+        timeLeft = Math.max(timeLeft - k.dt(), 0);
     });
 
     return booster;
