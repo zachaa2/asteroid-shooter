@@ -1,5 +1,6 @@
 import k from "../kaplayCtx";
 import makeShip from "../entities/makeShip";
+import makeButton from "../entities/makeButton.js";
 import { fadeAudioIn } from "../utils/audioFade.js";
 import scrollBackground from "../utils/scrollbackground.js";
 
@@ -27,6 +28,15 @@ export default function mainMenu() {
         k.pos(k.center().x, k.center().y - 200),
     ]);
 
+    const button = makeButton(k.vec2(k.center().x, k.center().y - 100), () => {
+        k.go("how-to-play");
+    });
+    k.add([
+        k.text("How To Play", { size: 32, font: "mania" }),
+        k.anchor("center"),
+        k.pos(k.vec2(k.center().x, k.center().y - 100)),
+    ]);
+
     const ship = makeShip(k.vec2(k.center().x, k.center().y + 100));
     ship.floatOriginY = ship.pos.y;
     ship.floatTime = 0;
@@ -42,6 +52,7 @@ export default function mainMenu() {
 
     // game navigation
     k.onMousePress("left", () => {
+        if (button.isHovering()) return;
         k.go("game", menuSfx, ship.pos.y, bg1.pos.y, bg2.pos.y);
     });
 }

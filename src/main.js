@@ -1,5 +1,6 @@
 import k from "./kaplayCtx";
 import mainMenu from "./scenes/mainMenu";
+import howToPlay from "./scenes/howToPlay";
 import intro from "./scenes/intro";
 import game from "./scenes/game";
 import gameOver from "./scenes/gameOver";
@@ -8,6 +9,7 @@ import loadCooldownShader from "./shaders/cooldownShader";
 // ----- LOAD GRAPHICS ----- //
 loadCooldownShader();
 k.loadSprite("space-bg", "graphics/bg_space.png");
+k.loadSprite("button", "graphics/button.png");
 
 k.loadSprite("asteroid", "graphics/asteroid_6x.png", {
     sliceX: 4,
@@ -71,6 +73,7 @@ k.scene("intro", intro);
 k.scene("main-menu", mainMenu);
 k.scene("game", game);
 k.scene("game-over", gameOver);
+k.scene("how-to-play", howToPlay);
 
 // ----- INIT GAME ----- //
 k.go("intro");
