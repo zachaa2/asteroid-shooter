@@ -1,4 +1,5 @@
 import kaplay from "kaplay";
+const isDev = import.meta.env.MODE === "development";
 
 const k = kaplay({
     width: 1920, 
@@ -25,7 +26,7 @@ const k = kaplay({
     },
     touchToMouse: true,
     debugKey: 'd',
-    debug: false, // TODO: change to false in prod
+    debug: isDev,
 });
 
 export default k;
