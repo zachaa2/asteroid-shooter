@@ -4,14 +4,19 @@ import makeButton from "../entities/makeButton.js";
 import { fadeAudioIn } from "../utils/audioFade.js";
 import scrollBackground from "../utils/scrollbackground.js";
 
-export default function mainMenu() {
+export default function mainMenu(sfx = null) {
     if (!k.getData("high-score")) k.setData("high-score", 0);
-
-    const menuSfx = k.play("menu-music", {
-        volume: 0,
-        loop: true,
-    });
-    fadeAudioIn(menuSfx, 0.6, 1.0);
+    let menuSfx;
+    if (!sfx){
+        menuSfx = k.play("menu-music", {
+            volume: 0,
+            loop: true,
+        });
+        fadeAudioIn(menuSfx, 0.6, 1.0);
+    } else {
+        menuSfx = sfx;
+    }
+    
     
     // entities
     const bg1 = k.add([k.sprite("space-bg"), k.pos(0, 0), k.anchor("topleft"), k.scale(1), k.opacity(0.8)]);
@@ -29,7 +34,7 @@ export default function mainMenu() {
     ]);
 
     const button = makeButton(k.vec2(k.center().x, k.center().y - 100), () => {
-        k.go("how-to-play");
+        k.go("how-to-play", menuSfx);
     });
     k.add([
         k.text("How To Play", { size: 32, font: "mania" }),
