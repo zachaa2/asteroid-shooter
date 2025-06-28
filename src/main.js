@@ -67,6 +67,7 @@ k.loadSound("bullet-sound", "sounds/laser-zap.mp3");
 k.loadSound("explosion", "sounds/explosion.mp3");
 k.loadSound("game-over", "sounds/game_over.mp3");
 k.loadSound("outro", "sounds/outro.mp3");
+k.loadSound("power-up", "sounds/power-up.mp3");
 
 // ----- LOAD SCENES ----- //
 k.scene("intro", intro);

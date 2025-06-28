@@ -8,7 +8,7 @@ export default function gameOver(){
         volume: 0.0, 
         loop: true 
     });
-    fadeAudioIn(gameOverSfx, 0.7, 1.5);
+    fadeAudioIn(gameOverSfx, 0.5, 1.5);
 
     // temp Background
     k.add([k.sprite("space-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]);

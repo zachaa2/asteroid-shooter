@@ -43,6 +43,7 @@ export default function makeScoreBooster(pos, multiplier){
     ]);
     // collision handler
     booster.shipCollisionHandler = booster.onCollide("ship", () => {
+        k.play("power-up", { volume: 0.70 });
         k.trigger("booster-collected", "score-text", booster.value);
         k.destroy(booster);
     });
